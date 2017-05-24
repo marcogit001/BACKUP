@@ -1,0 +1,157 @@
+15/04/201704/15/2017 23:59:10
+
+ def get(self, request, id=None, format=None):
+        lstStanding = []
+        teams = Teams.objects.filter(IsHidden = False)
+        #teamsTest = Teams.objects.filter(IsHidden = False).select_related('SeasonId','DivisionId')
+        #teamsTest = Teams.objects.filter(IsHidden = False)
+        #response = self.serializer_class(teamsTest,many=True)
+        #teams2 = response.data
+        #print(response)
+        #for k,v in teams2.OrderedDict:
+        #    print(k,v)
+        data = serializers.serialize("json", Teams.objects.filter(IsHidden = False))
+       # print(json.loads(data))
+
+        for team in json.loads(data):
+             
+            fieldsTeam = team['fields']
+            objSeason = serializers.serialize("json", Seasons.objects.filter(Id = fieldsTeam['SeasonId']))
+            objDivision = serializers.serialize("json", Divisions.objects.filter(Id = fieldsTeam['DivisionId']))
+            
+            teamsEnJuego = Schedules.objects.filter(HomeTeamId = team['pk'], AwayTeamId = team['pk'])
+            #print(team)
+            standing = {}
+            standing["SeasonId"] = fieldsTeam['SeasonId']
+            standing["Season"] = json.loads(objSeason)[0]['fields']
+            standing["DivisionId"] = fieldsTeam['DivisionId']
+            standing["Division"] = json.loads(objDivision)[0]['fields']
+
+            standing["TeamName"] = fieldsTeam['TeamName']
+            standing["Wins"] = 0
+            standing["Losses"] = 0
+            standing["Ties"] = 0
+            standing["Points"] = 0
+            standing["GoalsFor"] = 0
+            standing["GoalsAgainst"] = 0
+
+            for teamEnJuego in teamsEnJuego:
+                if team.Id == teamEnJuego.HomeTeamId:
+                    standing["GoalsFor"] += teamEnJuego.GoalsHomeTeam;
+                    standing["GoalsAgainst"] += teamEnJuego.GoalsAwayTeam;
+
+                    if teamEnJuego.GoalsHomeTeam > teamEnJuego.GoalsAwayTeam:
+                        standing["Wins"] += 1;
+                        standing["Points"] += 3;
+                    
+                    if teamEnJuego.GoalsHomeTeam < teamEnJuego.GoalsAwayTeam:
+                        standing["Losses"] += 1;
+                        
+                    if teamEnJuego.GoalsHomeTeam == teamEnJuego.GoalsAwayTeam and teamEnJuego.GoalsHomeTeam != null:
+                        standing["Ties"] += 1;
+                        standing["Points"] += 1;
+                else:
+                    standing["GoalsFor"] += teamEnJuego.GoalsAwayTeam;
+                    standing["GoalsAgainst"] += teamEnJuego.GoalsHomeTeam;
+                    if teamEnJuego.GoalsAwayTeam > teamEnJuego.GoalsHomeTeam:
+                        standing["Wins"] += 1;
+                        standing["Points"] += 3;
+                    if teamEnJuego.GoalsAwayTeam < teamEnJuego.GoalsHomeTeam:
+                        standing["Losses"] += 1;
+                    if teamEnJuego.GoalsAwayTeam == teamEnJuego.GoalsHomeTeam and teamEnJuego.GoalsHomeTeam != null:
+                        standing["Ties"] += 1;
+                        standing["Points"] += 1;
+                        
+            standing["Differential"] = standing["GoalsFor"] - standing["GoalsAgainst"];
+            #lstStanding.push(standing) #array_push($lstStanding,$standing);
+            #lstStanding.append(standing)
+            lstStanding.append(standing.copy())
+            
+        #data = serializers.serialize('json', lstStanding)
+        #return HttpResponse(data, content_type='aplication/json')
+            #return HttpResponse(data, mimetype="application/json")
+        #print(lstStanding)
+        return Response(lstStanding)
+
+standing = Standing.as_view()
+
+
+
+
+
+
+
+def get(self, request, id=None, format=None):
+        lstStanding = []
+        teams = Teams.objects.filter(IsHidden = False)
+        #teamsTest = Teams.objects.filter(IsHidden = False).select_related('SeasonId','DivisionId')
+        #teamsTest = Teams.objects.filter(IsHidden = False)
+        #response = self.serializer_class(teamsTest,many=True)
+        #teams2 = response.data
+        #print(response)
+        #for k,v in teams2.OrderedDict:
+        #    print(k,v)
+        data = serializers.serialize("json", Teams.objects.filter(IsHidden = False))
+        print(json.loads(data))
+
+        #for item in data:
+            #print(item)
+        #return Response(teams)  
+        
+
+        for team in teams:
+            teamsEnJuego = Schedules.objects.filter(HomeTeamId = team.Id, AwayTeamId = team.Id)
+            #print(team)
+            standing = {}
+            #standing["SeasonId"] = team.SeasonId;
+           # standing["Season"] = team.Season;
+            #standing["DivisionId"] = team.DivisionId;
+            #standing["Division"] = team.Division;
+
+            standing["TeamName"] = team.TeamName;
+            standing["Wins"] = 0;
+            standing["Losses"] = 0;
+            standing["Ties"] = 0;
+            standing["Points"] = 0;
+            standing["GoalsFor"] = 0;
+            standing["GoalsAgainst"] = 0;
+
+            for teamEnJuego in teamsEnJuego:
+                if team.Id == teamEnJuego.HomeTeamId:
+                    standing["GoalsFor"] += teamEnJuego.GoalsHomeTeam;
+                    standing["GoalsAgainst"] += teamEnJuego.GoalsAwayTeam;
+
+                    if teamEnJuego.GoalsHomeTeam > teamEnJuego.GoalsAwayTeam:
+                        standing["Wins"] += 1;
+                        standing["Points"] += 3;
+                    
+                    if teamEnJuego.GoalsHomeTeam < teamEnJuego.GoalsAwayTeam:
+                        standing["Losses"] += 1;
+                        
+                    if teamEnJuego.GoalsHomeTeam == teamEnJuego.GoalsAwayTeam and teamEnJuego.GoalsHomeTeam != null:
+                        standing["Ties"] += 1;
+                        standing["Points"] += 1;
+                else:
+                    standing["GoalsFor"] += teamEnJuego.GoalsAwayTeam;
+                    standing["GoalsAgainst"] += teamEnJuego.GoalsHomeTeam;
+                    if teamEnJuego.GoalsAwayTeam > teamEnJuego.GoalsHomeTeam:
+                        standing["Wins"] += 1;
+                        standing["Points"] += 3;
+                    if teamEnJuego.GoalsAwayTeam < teamEnJuego.GoalsHomeTeam:
+                        standing["Losses"] += 1;
+                    if teamEnJuego.GoalsAwayTeam == teamEnJuego.GoalsHomeTeam and teamEnJuego.GoalsHomeTeam != null:
+                        standing["Ties"] += 1;
+                        standing["Points"] += 1;
+                        
+            standing["Differential"] = standing["GoalsFor"] - standing["GoalsAgainst"];
+            #lstStanding.push(standing) #array_push($lstStanding,$standing);
+            #lstStanding.append(standing)
+            lstStanding.append(standing.copy())
+            
+        #data = serializers.serialize('json', lstStanding)
+        #return HttpResponse(data, content_type='aplication/json')
+            #return HttpResponse(data, mimetype="application/json")
+        #print(lstStanding)
+        return Response(lstStanding)
+
+standing = Standing.as_view()

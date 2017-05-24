@@ -1,0 +1,52 @@
+<section class="mainbar">
+    <section class="matter">
+        <div class="container">
+            <h2>Teams</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="widget wviolet">
+                        <div data-cc-widget-header title="Teams"
+                             allow-collapse="true"></div>
+
+                 <div class="form-group">
+                    <label for="division">Season</label>
+
+                    <select id="season" class="form-control" name="season" data-ng-model="vm.season" >
+                        <option value="">--Choose Season--</option>
+                        <option ng-repeat="team in vm.teams | unique:'SeasonId'" value="{{team.SeasonId}}">{{team.Season.SeasonName}}</option>
+                    </select>
+                 </div>
+
+                 <div data-cc-widget-header data-ng-repeat="(SeasonName,teamsSeason) in vm.teams | filter:{SeasonId:vm.season} | groupBy: 'Season.SeasonName'">
+                <b>Season: {{SeasonName}}</b>
+                    <div data-cc-widget-header data-ng-repeat="(DivisionName,teamsDivision) in teamsSeason  | groupBy: 'Division.DivisionName' ">
+                    <b> {{DivisionName}}</b>
+                        <div class="widget-content text-center text-info">
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th> Name</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="p in teamsDivision | filter:{SeasonId:vm.season}" >
+                                        <td>{{p.TeamName}}</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                            <div class="widget-foot">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+</section>

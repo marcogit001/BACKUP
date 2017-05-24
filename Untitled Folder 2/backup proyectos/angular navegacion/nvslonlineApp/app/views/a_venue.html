@@ -1,0 +1,70 @@
+<section class="mainbar">
+    <section class="matter">
+        <div class="container">
+            <h2><a href ng-click="vm.openNewVenue()" class="btn btn-default">New Venue </a>
+            </h2>
+
+            <div class="form-group">
+                    <label for="venueName">Venue Name</label>
+                    <input type="text" class="form-control" id="venueName" data-ng-model="vm.venueName" placeholder="Enter Venue Name"/>
+                </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="widget wviolet">
+                        <div data-cc-widget-header title="Venues" allow-collapse="false"></div>
+                        <div class="widget-content text-center text-info">
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Venue Name </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="p in vm.venues | filter:vm.venueName">
+                                        <td style="text-align: left">
+                                            <a id="Edit" href ng-click="vm.openEditVenue(p)">Edit </a>|
+                                        <a id="Delete" href ng-click="vm.openDeleteVenue(p)">Delete </a>
+                                        </td>
+                                        <td style="text-align: left">{{p.VenueName}}</td>
+                                       
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="widget-foot">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script type="text/ng-template" id="venue.html">
+    <div class="modal-content" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Venue</h4>
+        </div>
+        <div class="modal-body">
+
+            <form role="form">
+
+                <div class="form-group">
+                    <label for="venueName">Venue Name</label>
+                    <input type="text" class="form-control" id="venueName" data-ng-model="venueName" placeholder="Enter Venue Name"/>
+                </div>
+        
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-ng-click="cancel()">Close</button>
+            <button type="button" class="btn btn-primary" data-ng-click="ok()">Save changes</button>
+        </div>
+    </div><!-- /.modal-content -->
+    </script>
+</section>
+

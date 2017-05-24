@@ -1,0 +1,66 @@
+<section class="mainbar" >
+    <section class="matter">
+        <div class="container">
+            <h2> <a href ng-click="openNewDivision()" class="btn btn-default">New Division</a>
+            </h2>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="widget wviolet">
+                        <div data-cc-widget-header title="{{vm.title}}" allow-collapse="false"></div>
+                        <div class="widget-content text-center text-info">
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                <tr>
+                                    <th></th>                                    
+                                    <th>Division Name</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="p in vm.divisions">
+                                    <td style="text-align: left">
+                                        <a id="Edit" href ng-click="vm.openEditDivision(p)">Edit </a>|
+                                        <a id="Delete" href ng-click="vm.openDeleteDivision(p)">Delete </a>
+                                    </td>
+                                    
+                                    <td style="text-align: left">{{p.DivisionName}}</td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="widget-foot">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</section>
+<script type="text/ng-template" id="division.html">
+    <div class="modal-content" >
+        <div class="modal-header">
+            <button type="button" class="close" data-ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Divisions</h4>
+        </div>
+        <div class="modal-body">
+
+            <form role="form">
+
+                <div class="form-group">
+                    <label for="divisionName">Division Name</label>
+                    <input type="text" class="form-control" id="divisionName" data-ng-model="divisionName" placeholder="Enter Division Name"/>
+                </div>
+                
+              
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-ng-click="cancel()">Close</button>
+            <button type="button" class="btn btn-primary" data-ng-click="ok()">Save changes</button>
+        </div>
+    </div><!-- /.modal-content -->
+    </script>
